@@ -41,4 +41,4 @@ jobs:
           KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
         with:
           # This command tells our Kubernetes deployment to use the NEW image we just pushed
-          args: kubectl set image deployment/python-app-deployment python-app-container=${{ secrets.DOCKERHUB_USERNAME }}/python-app:${{ steps.vars.outputs.tag }}
+          args: set image deployment/python-app-deployment python-app-container=${{ secrets.DOCKERHUB_USERNAME }}/python-app:${{ steps.vars.outputs.tag }}
