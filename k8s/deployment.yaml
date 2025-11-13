@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-app-deployment
+spec:
+  replicas: 2 # Tell Kubernetes to run 2 copies (pods) of our app
+  selector:
+    matchLabels:
+      app: python-app
+  template:
+    metadata:
+      labels:
+        app: python-app
+    spec:
+      containers:
+      - name: python-app-container
+        # This is the image you built and tested!
+        image: yemidina/python-app:latest
+        imagePullPolicy: Never   # <--- ADD THIS LINE
+
+        ports:
+        - containerPort: 80
+        env:
+        - name: APP_VERSION
+          value: "v1.0.0" # We will update this later in the pipeline
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-app-service
+spec:
+  # LoadBalancer makes the service accessible from outside the cluster
+  # On Docker Desktop, this means it's available on 'localhost'
+  type: LoadBalancer
+  selector:
+    app: python-app # This connects the Service to the Deployment's pods
+  ports:
+  - port: 80       # Expose the service on port 80
+    targetPort: 80 # Route traffic to the container's port 80
