@@ -13,10 +13,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 2. Set up a unique image tag using the first 7 characters of the Git commit hash
+    
+
+        # THIS IS THE NEW, CORRECTED STEP FOR WINDOWS
       - name: Set Image Tag
         id: vars
-        run: echo "tag=${GITHUB_SHA::7}" >> $GITHUB_OUTPUT
+        shell: powershell
+        run: echo "tag=$($env:GITHUB_SHA.Substring(0, 7))" | Add-Content -Path $env:GITHUB_OUTPUT
 
       # 3. Log in to Docker Hub using the secrets we created
       - name: Login to Docker Hub
